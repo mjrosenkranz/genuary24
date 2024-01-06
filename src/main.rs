@@ -74,7 +74,11 @@ fn setup_window(
         transform: Transform::from_xyz(-dist, height, dist).looking_at(origin, Vec3::Y),
         ..default()
     },
-    BloomSettings::default(),
+    BloomSettings{
+        composite_mode: BloomCompositeMode::EnergyConserving,
+        intensity: 0.3,
+        ..default()
+    },
     ));
 
     let mut window = windows.single_mut();
@@ -100,6 +104,7 @@ fn setup_particles(
         .unwrap(),
     );
     let material = materials.add(StandardMaterial {
+        base_color: Color::BLACK,
         emissive: Color::WHITE,
         ..default()
     });
