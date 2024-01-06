@@ -1604,15 +1604,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "genuary"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "rand",
- "rand_chacha",
-]
-
-[[package]]
 name = "getrandom"
 version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2574,6 +2565,15 @@ dependencies = [
  "redox_syscall 0.4.1",
  "smallvec",
  "windows-targets 0.48.5",
+]
+
+[[package]]
+name = "particles"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "rand",
+ "rand_chacha",
 ]
 
 [[package]]
@@ -3806,9 +3806,9 @@ dependencies = [
 
 [[package]]
 name = "winnow"
-version = "0.5.32"
+version = "0.5.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8434aeec7b290e8da5c3f0d628cb0eac6cabcb31d14bb74f779a08109a5914d6"
+checksum = "b7520bbdec7211caa7c4e682eb1fbe07abe20cee6756b6e00f537c82c11816aa"
 dependencies = [
  "memchr",
 ]
