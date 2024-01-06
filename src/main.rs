@@ -1,4 +1,4 @@
-use bevy::{prelude::*, DefaultPlugins};
+use bevy::{prelude::*, DefaultPlugins, render::camera::ScalingMode};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use std::f32::consts::TAU;
@@ -47,13 +47,23 @@ fn setup_window(
     mut clear_color: ResMut<ClearColor>,
     mut windows: Query<&mut Window>,
 ) {
+
+    let origin = Vec3::new(0.0, 25.0, 0.0);
+    let dist: f32 = 50.0;
+    let height: f32 = dist * 0.8534 + origin.y;
+
     // setup the camera
     commands.spawn(Camera3dBundle {
         camera: Camera {
             hdr: true,
             ..default()
         },
-        transform: Transform::from_xyz(-50.0, 50.0, 50.0).looking_at(Vec3::ZERO, Vec3::Y),
+        projection: OrthographicProjection {
+            scale: 1.0,
+            scaling_mode: ScalingMode::FixedVertical(100.0),
+            ..default()
+        }.into(),
+        transform: Transform::from_xyz(-dist, height, dist).looking_at(origin, Vec3::Y),
         ..default()
     });
 
