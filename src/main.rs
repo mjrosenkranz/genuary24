@@ -1,4 +1,10 @@
-use bevy::{prelude::*, DefaultPlugins, render::camera::ScalingMode};
+use bevy::{
+    core_pipeline::{
+bloom::{BloomCompositeMode, BloomSettings},
+        tonemapping::Tonemapping,
+    },
+    prelude::*, DefaultPlugins, render::camera::ScalingMode,
+};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 use std::f32::consts::TAU;
@@ -6,6 +12,7 @@ use std::f32::consts::TAU;
 const STEP: f32 = 0.01;
 const MAX_RADIUS: f32 = 50.0;
 const MIN_RADIUS: f32 = 0.01;
+const N_PARTICLES: u32 = 1000;
 
 #[derive(Component)]
 struct Particle {
@@ -53,11 +60,12 @@ fn setup_window(
     let height: f32 = dist * 0.8534 + origin.y;
 
     // setup the camera
-    commands.spawn(Camera3dBundle {
+    commands.spawn((Camera3dBundle {
         camera: Camera {
             hdr: true,
             ..default()
         },
+        tonemapping: Tonemapping::TonyMcMapface,
         projection: OrthographicProjection {
             scale: 1.0,
             scaling_mode: ScalingMode::FixedVertical(100.0),
@@ -65,12 +73,14 @@ fn setup_window(
         }.into(),
         transform: Transform::from_xyz(-dist, height, dist).looking_at(origin, Vec3::Y),
         ..default()
-    });
+    },
+    BloomSettings::default(),
+    ));
 
     let mut window = windows.single_mut();
     window.resolution.set(500.0, 500.0);
 
-    clear_color.0 = Color::hex("#2E3961").unwrap();
+    clear_color.0 = Color::BLACK;
     // TODO: setup the particles
 }
 
@@ -90,12 +100,12 @@ fn setup_particles(
         .unwrap(),
     );
     let material = materials.add(StandardMaterial {
-        emissive: Color::hex("#E4E7E4").unwrap(),
+        emissive: Color::WHITE,
         ..default()
     });
 
-    for _ in 0..1000 {
-        let random = rng.0.gen_range(1.0..100.0) / 100.0;
+    for _ in 0..N_PARTICLES {
+        let random = rng.0.gen_range(1.0..N_PARTICLES as f32) / N_PARTICLES as f32;
         let particle = Particle::new(random);
 
         commands.spawn((
