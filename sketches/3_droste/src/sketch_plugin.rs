@@ -1,19 +1,15 @@
 use bevy::{
     prelude::*, DefaultPlugins, render::camera::ScalingMode,
 };
-use rand::prelude::*;
-use rand_chacha::ChaCha8Rng;
 
-#[derive(Resource)]
-struct Rand(ChaCha8Rng);
+pub struct SketchSetupPlugin;
 
-fn main() {
-    App::new()
-        .insert_resource(Rand(ChaCha8Rng::seed_from_u64(3)))
-        .add_plugins(DefaultPlugins)
-        .add_systems(Startup, (setup_window))
-        .add_systems(Update, update)
-        .run();
+impl Plugin for SketchSetupPlugin {
+    fn build(&self, app: &mut App) {
+        app
+            .add_plugins(DefaultPlugins)
+            .add_systems(Startup, setup_window);
+    }
 }
 
 fn setup_window(
@@ -47,8 +43,3 @@ fn setup_window(
     clear_color.0 = Color::BLACK;
 }
 
-fn update(
-    time: Res<Time>,
-    mut rng: ResMut<Rand>,
-) {
-}
